@@ -35,7 +35,7 @@ tinify.key = gg[0]
 bottlenose.Amazon()
 amazon = bottlenose.Amazon("AKIAIL6WN32WBBYNIY4Q", "PchxA1xqaaqRseDKJWxW0ZKhV8elJIBcMaUWqJHJ", "topse07-21", MaxQPS=1.2,
                            Region="DE")
-
+#wo kommt das an?
 def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)
 # amazon = bottlenose.Amazon(MaxQPS=0.8)
