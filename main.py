@@ -35,7 +35,7 @@ tinify.key = gg[0]
 bottlenose.Amazon()
 amazon = bottlenose.Amazon("AKIAIL6WN32WBBYNIY4Q", "PchxA1xqaaqRseDKJWxW0ZKhV8elJIBcMaUWqJHJ", "topse07-21", MaxQPS=1.2,
                            Region="DE")
-#wo kommt das an?
+
 def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)
 # amazon = bottlenose.Amazon(MaxQPS=0.8)
@@ -191,10 +191,10 @@ class WatchInput(Thread):
         def prodbilder(prodkat, pn):
             edit = True
             try:
-                for filename in find_files(home + r"/Google Drive/Produktbilder/nicht editiert/" + prodkat, '*.' + pn):
-                    pname = filename.replace(home + r"/Google Drive/Produktbilder/nicht editiert/" + prodkat, "")
+                for filename in find_files(home + r"/server@fvi.rocks/Produktbilder/nicht editiert/" + prodkat, '*.' + pn):
+                    pname = filename.replace(home + r"/server@fvi.rocks/Produktbilder/nicht editiert/" + prodkat, "")
                     gname = os.path._getfullpathname(filename)
-                    newname = home + r"/Google Drive/Produktbilder/fertig editiert/" + prodkat + "/" + os.path.basename(
+                    newname = home + r"/server@fvi.rocks/Produktbilder/fertig editiert/" + prodkat + "/" + os.path.basename(
                         filename)
                     print(newname)
                     # my_f = open(filename)
@@ -234,8 +234,8 @@ class WatchInput(Thread):
                         prod = input("Produktkategorie: ")
                         edit = prodbilder(prod, "jpg")
                         edit = prodbilder(prod, "png")
-                        src = home + r"/Google Drive/Produktbilder/nicht editiert/" + prod
-                        dst = home + r"/Google Drive/Produktbilder/fertig editiert/" +prod
+                        src = home + r"/server@fvi.rocks/Produktbilder/nicht editiert/" + prod
+                        dst = home + r"/server@fvi.rocks/Produktbilder/fertig editiert/" +prod
                         if prod != "Einzel-Bilder":
                             shutil.move(src,dst)
                         #if edit:
@@ -253,17 +253,14 @@ class WatchInput(Thread):
                     # print("--- %s pictures per second" % pcs)
                 tabellen = ["Tabellen","Tabelle","tabellen","tabelle","T","t","1",1]
                 if start in tabellen:
-                    f = input("Sind sie im vorgeladenen Ordner?")
-                    p = ""
-                    if f == "Ja" or f == "ja" or f == "yes":
-                        p = "Zu_berechnende_Tabellen-2015-11-19/Zu berechnende Tabellen/"
                     d = input("Tabelle: ")
-                    print (r"C:/Users/Joshua/Downloads/"+p+d+".xlsx")
+                    print (home+r"/server@fvi.rocks/Tabellen/Zu berechnende Tabellen/"+d+".xlsx")
                     try:
-                        ubergabe(r"C:/Users/Joshua/Downloads/"+p+d+".xlsx")
+                        ubergabe(home+r"/server@fvi.rocks/Tabellen/Zu berechnende Tabellen/"+d+".xlsx")
                     except Exception as e:
                         print("Error:")
                         print(e)
+                        shutil.move(home+r"/server@fvi.rocks/Tabellen/Zu berechnende Tabellen/"+d+".xlsx",home+r"/server@fvi.rocks/Tabellen/Fehlerhafte Tabellen/")
             except Exception as e:
                 print(e)
                 input()
@@ -843,12 +840,13 @@ def ubergabe(path):
     print(date)
     print(wert1)
     print(wert1n)
+
     print(gew1)
-    mb.save(r"C:/Users/Joshua/Google Drive/Tabellen/Auszulesende Tabellen/" + savepath + " ("+date+").xlsx")
+    mb.save(home+r"/Joshua/server@fvi.rocks/Tabellen/Auszulesende Tabellen/" + savepath + " ("+date+").xlsx")
     wb.save(path)
-    if os.path.exists(r"C:/Users/Joshua/Google Drive/Tabellen/Berechnete Tabellen/"+savepath):
-       os.remove(r"C:/Users/Joshua/Google Drive/Tabellen/Berechnete Tabellen/"+savepath)
-    shutil.move(path,r"C:/Users/Joshua/Google Drive/Tabellen/Berechnete Tabellen/")
+    if os.path.exists(home +r"/Users/Joshua/server@fvi.rocks/Tabellen/Berechnete Tabellen/"+savepath):
+       os.remove(home+"/Users/Joshua/server@fvi.rocks/Tabellen/Berechnete Tabellen/"+savepath)
+    shutil.move(path,home+r"/Users/Joshua/server@fvi.rocks/Tabellen/Berechnete Tabellen/")
     #print(endnote("B"))
 
 
