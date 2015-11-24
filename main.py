@@ -3,20 +3,20 @@ import json
 import os
 import fnmatch
 import time
-from openpyxl import Workbook
-from openpyxl import load_workbook
 from threading import Thread
-from PIL import Image
 from tinify import tinify
-from hashlib import md5
-import shutil
 import re
-import bottlenose
 from xml.dom import minidom
+import shutil
+
+from openpyxl import load_workbook
+from PIL import Image
+import bottlenose
 import requests
 from bs4 import BeautifulSoup
 from openpyxl.comments import Comment
-import shutil
+
+
 #CHANGES IN UNIX MERGE
 def copyDirectory(src, dest):
     try:
@@ -52,6 +52,12 @@ def move_over(src_dir, dest_dir):
                 os.remove(dest)
         shutil.move(src, dest_dir)
 
+
+def resize2(path):
+    img = Image.open(path)
+    maxsize = (1000, 1000)
+    img.thumbnail(maxsize)
+    img.save(path)
 
 def resize(path):
     img = Image.open(path)
@@ -187,7 +193,45 @@ class WatchInput(Thread):
         # edited = get_edit("Input.json")
 
         # pictures = len(edited)
-
+        def shopbilder(prodkat, pn):
+            edit = True
+            try:
+                for filename in find_files(
+                                        home + r"/server@fvi.rocks/Produktbilder/Shopbilder nicht editiert/" + prodkat,
+                                        '*.' + pn):
+                    pname = filename.replace(
+                        home + r"/server@fvi.rocks/Produktbilder/Shopbilder nicht editiert/" + prodkat, "")
+                    gname = os.path._getfullpathname(filename)
+                    newname = home + r"/server@fvi.rocks/Produktbilder/Shopbilder fertig editiert/" + prodkat + "/" + os.path.basename(
+                        filename)
+                    print(newname)
+                    # my_f = open(filename)
+                    # my_s = my_f.read()
+                    # my_f.close()
+                    # cname = md5.new(my_s).hexdigest()
+                    # print(gname)
+                    # if pname not in edited and gname not in edited:
+                    try:
+                        print("Will be resized:" + gname)
+                        resize2(gname)
+                        try:
+                            source = tinify.from_file(gname)
+                            source.to_file(gname)
+                        except:
+                            tinify.key = gg.remove(tinify.key)
+                            tinify.key = gg[0]
+                            with open("gg.json", "w") as file:
+                                json.dump(gg, file)
+                        # edited.append(gname)
+                        print(pname)
+                    except Exception as e:
+                        print("Error: " + pname)
+                        print(e)
+                        edit = False
+                        # sav_edit("input.json",edited)
+                return edit
+            except Exception as e:
+                print(e)
         def prodbilder(prodkat, pn):
             edit = True
             try:
@@ -227,13 +271,31 @@ class WatchInput(Thread):
             try:
                 start_time = time.time()
                 # edited = get_edit("Input.json")
-                start = input("Tabellen oder Bilder?")
+                start = input("Tabellen, Bilder oder Shop?")
+                shop = ["Shop", "shop", "Shopbilder", "shopbilder"]
                 bilder = ["Bilder","bilder",2,"2","B","b","Bild","bild"]
+                if start in shop:
+                    try:
+                        prod = input("Welcher Shop: ")
+                        edit = shopbilder(prod, "jpg")
+                        edit = shopbilder(prod, "png")
+                        edit = shopbilder(prod, "jpeg")
+                        edit = shopbilder(prod, "jfif")
+                        edit = shopbilder(prod, "jpe")
+                        src = home + r"/server@fvi.rocks/Produktbilder/Shopbilder nicht editiert/" + prod
+                        dst = home + r"/server@fvi.rocks/Produktbilder/Shopbilder fertig editiert/" + prod
+                        shutil.move(src, dst)
+                    except Exception as e:
+                        print(e)
+                        print("Error")
                 if start in bilder:
                     try:
                         prod = input("Produktkategorie: ")
                         edit = prodbilder(prod, "jpg")
                         edit = prodbilder(prod, "png")
+                        edit = prodbilder(prod, "jpeg")
+                        edit = prodbilder(prod, "jfif")
+                        edit = prodbilder(prod, "jpe")
                         src = home + r"/server@fvi.rocks/Produktbilder/nicht editiert/" + prod
                         dst = home + r"/server@fvi.rocks/Produktbilder/fertig editiert/" +prod
                         if prod != "Einzel-Bilder":
@@ -260,7 +322,20 @@ class WatchInput(Thread):
                     except Exception as e:
                         print("Error:")
                         print(e)
-                        shutil.move(home+r"/server@fvi.rocks/Tabellen/Zu berechnende Tabellen/"+d+".xlsx",home+r"/server@fvi.rocks/Tabellen/Fehlerhafte Tabellen/")
+                        time.sleep(3)
+
+                        try:
+
+                            if os.path.exists(home + r"/server@fvi.rocks/Tabellen/Fehlerhafte Tabellen/" + d + ".xlsx"):
+                                os.remove(home + r"/server@fvi.rocks/Tabellen/Fehlerhafte Tabellen/" + d + ".xlsx")
+                            shutil.move(home + r"/server@fvi.rocks/Tabellen/Zu berechnende Tabellen/" + d + ".xlsx",
+                                        home + r"/server@fvi.rocks/Tabellen/Fehlerhafte Tabellen/")
+                            if os.path.exists(
+                                                            home + r"/server@fvi.rocks/Tabellen/Zu berechnende Tabellen/" + d + ".xlsx") and os.path.exists(
+                                                            home + r"/server@fvi.rocks/Tabellen/Fehlerhafte Tabellen/" + d + ".xlsx"):
+                                os.remove(home + r"/server@fvi.rocks/Tabellen/Zu berechnende Tabellen/" + d + ".xlsx")
+                        except Exception as e:
+                            print(e)
             except Exception as e:
                 print(e)
                 input()
@@ -341,7 +416,10 @@ def find_files(directory, pattern):
 
 # noinspection PyStatementEffect
 def ubergabe(path):
+
     ping = path
+    # print("We got here")
+
     wb = load_workbook(path)
     mb = load_workbook("Abzulesen (DATUM).xlsx")
     ws1 = wb.get_sheet_by_name("Variablen")
@@ -842,12 +920,14 @@ def ubergabe(path):
     print(wert1n)
 
     print(gew1)
-    mb.save(home+r"/Joshua/server@fvi.rocks/Tabellen/Auszulesende Tabellen/" + savepath + " ("+date+").xlsx")
+    mb.save(home + r"/server@fvi.rocks/Tabellen/Auszulesende Tabellen/" + savepath + " (" + date + ").xlsx")
     wb.save(path)
-    if os.path.exists(home +r"/Users/Joshua/server@fvi.rocks/Tabellen/Berechnete Tabellen/"+savepath):
-       os.remove(home+"/Users/Joshua/server@fvi.rocks/Tabellen/Berechnete Tabellen/"+savepath)
-    shutil.move(path,home+r"/Users/Joshua/server@fvi.rocks/Tabellen/Berechnete Tabellen/")
+    time.sleep(1)
+    if os.path.exists(home + r"/server@fvi.rocks/Tabellen/Berechnete Tabellen/" + savepath):
+        os.remove(home + "/server@fvi.rocks/Tabellen/Berechnete Tabellen/" + savepath)
+    shutil.move(path, home + r"/server@fvi.rocks/Tabellen/Berechnete Tabellen/")
     #print(endnote("B"))
+
 
 
 print(bstbe(27))
