@@ -298,7 +298,7 @@ class WatchInput(Thread):
                     # print(gname)
                     # if pname not in edited and gname not in edited:
                     try:
-                        resize(gname)
+                        resize3(gname)
                         try:
                             source = tinify.from_file(gname)
                             source.to_file(gname)
