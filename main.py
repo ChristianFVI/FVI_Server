@@ -53,6 +53,17 @@ def move_over(src_dir, dest_dir):
         shutil.move(src, dest_dir)
 
 
+def resize3(path):
+    img = Image.open(path)
+    img_w, img_h = img.size
+    bg_s = img_w
+    if img_h > bg_s:
+        bg_s = img_h
+    background = Image.new("RGBA", (bg_s, bg_s), (255, 255, 255, 255))
+    offset = (int((bg_s - img_w) / 2), int((bg_s - img_h) / 2))
+    background.paste(img, offset)
+    background = background.resize((1000, 1000))
+    background.save(path)
 def resize2(path):
     img = Image.open(path)
     maxsize = (1000, 1000)
@@ -267,13 +278,68 @@ class WatchInput(Thread):
                 return edit
             except Exception as e:
                 print(e)
+
+        def screenshots(prodkat, pn):
+            edit = True
+            try:
+                for filename in find_files(
+                                        home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots nicht editiert/" + prodkat,
+                                        '*.' + pn):
+                    pname = filename.replace(
+                        home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots nicht editiert/" + prodkat, "")
+                    gname = os.path._getfullpathname(filename)
+                    newname = home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots fertig editiert/" + prodkat + "/" + os.path.basename(
+                        filename)
+                    print(newname)
+                    # my_f = open(filename)
+                    # my_s = my_f.read()
+                    # my_f.close()
+                    # cname = md5.new(my_s).hexdigest()
+                    # print(gname)
+                    # if pname not in edited and gname not in edited:
+                    try:
+                        resize(gname)
+                        try:
+                            source = tinify.from_file(gname)
+                            source.to_file(gname)
+                        except:
+                            tinify.key = gg.remove(tinify.key)
+                            tinify.key = gg[0]
+                            with open("gg.json", "w") as file:
+                                json.dump(gg, file)
+                        # edited.append(gname)
+                        print(pname)
+                    except Exception as e:
+                        print("Error: " + pname)
+                        print(e)
+                        edit = False
+                        # sav_edit("input.json",edited)
+                return edit
+            except Exception as e:
+                print(e)
         while 1:
             try:
                 start_time = time.time()
                 # edited = get_edit("Input.json")
-                start = input("Tabellen, Bilder oder Shop?")
+                start = input("Tabellen, Bilder, Shop oder Screenshot?")
                 shop = ["Shop", "shop", "Shopbilder", "shopbilder"]
                 bilder = ["Bilder","bilder",2,"2","B","b","Bild","bild"]
+                screen = ["Screenshots", "Shopscreenshots", "Screen", "screen", "screenshot", "shopscreenshot",
+                          "Screenshot"]
+                if start in screen:
+                    try:
+                        prod = input("Welcher Shop: ")
+                        edit = screenshots(prod, "jpg")
+                        edit = screenshots(prod, "png")
+                        edit = screenshots(prod, "jpeg")
+                        edit = screenshots(prod, "jfif")
+                        edit = screenshots(prod, "jpe")
+                        src = home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots nicht editiert/" + prod
+                        dst = home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots fertig editiert/" + prod
+                        shutil.move(src, dst)
+                    except Exception as e:
+                        print(e)
+                        print("Error")
                 if start in shop:
                     try:
                         prod = input("Welcher Shop: ")
@@ -428,6 +494,12 @@ def ubergabe(path):
     prod = True
     nr = 0
     Wertungen = []
+    '''def (i):
+        if "%" in i:
+            p  = re.sub("[\s%]+","",i)   Przntberechnung
+            return int(p) / 100
+    #print(("10%"))'''
+
     Wertungen.append(ws1["B2"].value)
     Wertungen.append(ws1["B3"].value)
     Wertungen.append(ws1["B4"].value)
@@ -499,9 +571,11 @@ def ubergabe(path):
     # GEWICHTUNG1
     gew1 = []
     for i in range(len(wert1)):
-        # print(i)
+
         b = bstbe(6 + i * 3)
-        gew1.append(ws1[b + "2"].value)
+        print(ws1[b + "2"].value)
+        gew1.append((ws1[b + "2"].value))
+        print("BIS HIER HIN!")
         if gew1[0] == None:
             gew1.remove(None)
     # if gew1.index(None)!=-1:
@@ -515,7 +589,7 @@ def ubergabe(path):
     for i in range(len(wert2)):
         # print(i)
         b = bstbe(6 + i * 3)
-        gew2.append(ws1[b + "3"].value)
+        gew2.append((ws1[b + "3"].value))
         if gew2[0] == None:
             gew2.remove(None)
             # if gew2.index(None)!=-1:
@@ -529,7 +603,7 @@ def ubergabe(path):
     for i in range(len(wert3)):
 
         b = bstbe(6 + i * 3)
-        gew3.append(ws1[b + "4"].value)
+        gew3.append((ws1[b + "4"].value))
         if gew3[0] == None:
             gew3.remove(None)
     # if gew3.index(None)!=-1:
@@ -674,9 +748,13 @@ def ubergabe(path):
         l =round(len(tabwerte[d+"_s"])/2)
         median = (tabwerte[d+"_s"][l-1] + tabwerte[d+"_s"][l])/2
         max = median*1.5
+        if max == 0:
+            max = 0.1
         tabwerte[d+"_p"] = []
+        print("Zeile 746")
         for f in tabwerte[d]:
             print(f)
+            print(max)
             if f != 0:
 
                 value = f / max * 100
@@ -687,6 +765,7 @@ def ubergabe(path):
             if value < 0:
                 value = 0
             tabwerte[d+"_p"].append(value)
+    print("Zeile 758")
     print (tabvar)
     print (tabwerte)
     def get_star(g, wert, v):
@@ -718,6 +797,7 @@ def ubergabe(path):
         #print (add)
         sume = 0
         a = 0
+        gesgew = 0
         for i in add:
             v = i
             print("JETZ KOMMT A:")
@@ -728,11 +808,12 @@ def ubergabe(path):
             d = tabwerte[i+"_p"][s]
             if plus[a] == "-":
                 d = 100 - d
+            gesgew = gesgew + gewt[a]
             sume = sume + gewt[a] * d
             a += 1
         print("Und die summe:")
         print(sume)
-        return sume
+        return sume / gesgew
 
     # print(getabs("Gummi",7))
     # print("TT")
@@ -755,7 +836,7 @@ def ubergabe(path):
     def endnote(w1,w2,w3,h):
         #stern1 = stern(wert1, gew1, plu1, h)
         stern1 = w1
-        a =ws1["C2"].value
+        a = (ws1["C2"].value)
         if a == None:
             a = 1 / 3
 
@@ -768,7 +849,7 @@ def ubergabe(path):
         #print("#######")
         #stern2 = stern(wert2, gew2, plu2, h)
         stern2 = w2
-        b =ws1["C3"].value
+        b = (ws1["C3"].value)
         if b == None:
             b = 1 / 3
 
@@ -781,7 +862,7 @@ def ubergabe(path):
         #print("#######")
         #stern3 = stern(wert3, gew3, plu3, h)
         stern3 = w3
-        c =ws1["C4"].value
+        c = (ws1["C4"].value)
         if c == None:
             c = 1 / 3
         #print("#######")
@@ -794,7 +875,7 @@ def ubergabe(path):
         print(a)
         print(b)
         print(c)
-        endstern = (stern1 * a + stern2 * b+ stern3 * c)
+        endstern = (stern1 * a + stern2 * b + stern3 * c) / (a + b + c)
         print("Hier kommt der Endstern")
         print(endstern)
         for i in range(100,0,-3):
@@ -835,12 +916,12 @@ def ubergabe(path):
     print (wert1n)
     def get_stern(b):
         g = 18
-        if ws2["B2"].value == None:
+        if ws2["B2"].value == None or ws2["B2"].value == "":
             g = 22
         for i in range(100,0,-g):
             print(i)
             t = 100 + i * -100/6
-            if b >= i:
+            if b > i:
                 d = 5 - i *0.5
                 d = (5.5-((100-i)/g*0.5))
                 return d
@@ -914,6 +995,8 @@ def ubergabe(path):
     savepath = os.path.splitext(savepath)[0]
     print(savepath)
     print (wert1n)
+    print(wert2n)
+    print(wert3n)
     date = time.strftime('%m.%y')
     print(date)
     print(wert1)
@@ -929,7 +1012,7 @@ def ubergabe(path):
     #print(endnote("B"))
 
 
-
+# print(("10%"))
 print(bstbe(27))
 # WatchResize()
 # WatchTiny()
