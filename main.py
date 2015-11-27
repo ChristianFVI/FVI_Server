@@ -659,14 +659,14 @@ def ubergabe(path):
             time.sleep(1)
             asd = r.text
             s = BeautifulSoup(r.text,"html.parser")
-            time.sleep(1)
+            # time.sleep(1)
             g = s.find('div', id='avgRating')
             m = re.search(r'\d+(\.\d+)?', g.text.strip())
             f = float(m.group(0))
             g = f / 5 * 100
             return g
         except:
-            time.sleep(1)
+            #time.sleep(1)
             c = c+1
             if c == 3:
                 return 4 / 5 *100
