@@ -945,7 +945,7 @@ def ubergabe(path):
     if ws2["B2"].value != None:
         for i in range(len(endnoten)):
             b = bstbe(2 + i)
-
+            # 1
             print("ENDNOOOOTTEEENNENENNENENENENNENENE:")
             print(drop)
             if endnoten[i] in drop:
