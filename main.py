@@ -16,7 +16,7 @@ import requests
 from bs4 import BeautifulSoup
 from openpyxl.comments import Comment
 
-crnt = os.getcwd()
+crnt = os.path.dirname(os.path.realpath(__file__))
 print(crnt)
 #CHANGES IN UNIX MERGE
 def copyDirectory(src, dest):
