@@ -116,7 +116,7 @@ class WatchResize(Thread):
                 ending = os.path.splitext(i)[1]
                 if ending == ".jpg" or ending == ".png" or ending == ".jpeg" or ending == ".gif" or ending == ".PNG":
                     path = path_to_watch + i
-                    gname = os.path._getfullpathname(path)
+                    gname = os.path.abspath(path)
                     v = os.path.splitext(i)[0]
                     if gname not in edited:
                         try:
@@ -153,7 +153,7 @@ class WatchPic(Thread):
                 for filename in find_files(home + r"/server@fvi.rocks/Produktbilder/nicht editiert/" + prodkat,
                                            '*.' + pn):
                     pname = filename.replace(home + r"/server@fvi.rocks/Produktbilder/nicht editiert/" + prodkat, "")
-                    gname = os.path._getfullpathname(filename)
+                    gname = os.path.abspath(filename)
                     try:
                         resize(gname)
                         try:
@@ -216,7 +216,7 @@ class WatchShop(Thread):
                                         '*.' + pn):
                     pname = filename.replace(
                         home + r"/server@fvi.rocks/Produktbilder/Shopbilder nicht editiert/" + prodkat, "")
-                    gname = os.path._getfullpathname(filename)
+                    gname = os.path.abspath(filename)
                     try:
                         resize2(gname)
                         try:
@@ -279,7 +279,7 @@ class WatchScreen(Thread):
                                         '*.' + pn):
                     pname = filename.replace(
                         home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots nicht editiert/" + prodkat, "")
-                    gname = os.path._getfullpathname(filename)
+                    gname = os.path.abspath(filename)
                     try:
                         resize3(gname)
                         try:
@@ -340,7 +340,7 @@ class WatchProd(Thread):
                                         '*.' + pn):
                     pname = filename.replace(
                         home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots nicht editiert/" + prodkat, "")
-                    gname = os.path._getfullpathname(filename)
+                    gname = os.path.abspath(filename)
                     try:
                         resize3(gname)
                         try:
