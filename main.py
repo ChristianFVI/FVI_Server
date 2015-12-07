@@ -963,7 +963,7 @@ def ubergabe(path):
     print (wert1n)
     print(wert2n)
     print(wert3n)
-    date = time.strftime('%m.%y')
+    date = time.strftime('%h:%m - %d.%m.%y')
     print(date)
     print(wert1)
     print(wert1n)
