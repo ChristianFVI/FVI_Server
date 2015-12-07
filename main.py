@@ -16,7 +16,8 @@ import requests
 from bs4 import BeautifulSoup
 from openpyxl.comments import Comment
 
-
+crnt = os.getcwd()
+print(crnt)
 #CHANGES IN UNIX MERGE
 def copyDirectory(src, dest):
     try:
@@ -29,10 +30,10 @@ def copyDirectory(src, dest):
         print('Directory not copied. Error: %s' % e)
 
 home = os.path.expanduser("~")
-with open("gg.json", "r") as file:
+with open(crnt + r"/gg.json", "r") as file:
     gg = json.load(file)
 tinify.key = gg[0]
-with open("gg.json", "w") as file:
+with open(crnt + r"/gg.json", "w") as file:
     json.dump(gg, file)
 bottlenose.Amazon()
 amazon = bottlenose.Amazon("AKIAIL6WN32WBBYNIY4Q", "PchxA1xqaaqRseDKJWxW0ZKhV8elJIBcMaUWqJHJ", "topse07-21", MaxQPS=1.2,
@@ -125,7 +126,7 @@ class WatchResize(Thread):
                         except:
                             tinify.key = gg.remove(tinify.key)
                             tinify.key = gg[0]
-                            with open("gg.json", "w") as file:
+                            with open(crnt + r"/gg.json", "w") as file:
                                 json.dump(gg, file)
 
                         resize(path_to_write + v + ".png")
@@ -161,11 +162,11 @@ class WatchPic(Thread):
                             source.to_file(gname)
                         except:
                             er = True
-                            with open("gg.json", "r") as file:
+                            with open(crnt + r"/gg.json", "r") as file:
                                 json.load(file)
                             gg.remove(tinify.key)
                             tinify.key = gg[0]
-                            with open("gg.json", "w") as file:
+                            with open(crnt + r"/gg.json", "w") as file:
                                 json.dump(gg, file)
                         print(pname)
 
@@ -224,11 +225,11 @@ class WatchShop(Thread):
                             source.to_file(gname)
                         except:
                             er = True
-                            with open("gg.json", "r") as file:
+                            with open(crnt + r"/gg.json", "r") as file:
                                 json.load(file)
                             gg.remove(tinify.key)
                             tinify.key = gg[0]
-                            with open("gg.json", "w") as file:
+                            with open(crnt + r"/gg.json", "w") as file:
                                 json.dump(gg, file)
                         print(pname)
                     except Exception as e:
@@ -287,11 +288,11 @@ class WatchScreen(Thread):
                             source.to_file(gname)
                         except:
                             er = True
-                            with open("gg.json", "r") as file:
+                            with open(crnt + r"/gg.json", "r") as file:
                                 json.load(file)
                             gg.remove(tinify.key)
                             tinify.key = gg[0]
-                            with open("gg.json", "w") as file:
+                            with open(crnt + r"/gg.json", "w") as file:
                                 json.dump(gg, file)
                         print(pname)
                     except Exception as e:
@@ -351,7 +352,7 @@ class WatchProd(Thread):
                         except:
                             tinify.key = gg.remove(tinify.key)
                             tinify.key = gg[0]
-                            with open("gg.json", "w") as file:
+                            with open(crnt + r"/gg.json", "w") as file:
                                 json.dump(gg, file)
                         print(pname)
                     except Exception as e:
@@ -451,7 +452,7 @@ def ubergabe(path):
     # print("We got here")
 
     wb = load_workbook(path)
-    mb = load_workbook("Abzulesen (DATUM).xlsx")
+    mb = load_workbook(crnt + r"/Abzulesen (DATUM).xlsx")
     ws1 = wb.get_sheet_by_name("Variablen")
     ws2 = wb.get_sheet_by_name("Produktdaten")
     ms1 = mb.active
