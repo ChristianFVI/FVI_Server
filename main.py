@@ -16,6 +16,7 @@ import requests
 from bs4 import BeautifulSoup
 from openpyxl.comments import Comment
 
+print(time.strftime('%H:%M - %d.%m.%y'))
 crnt = os.path.dirname(os.path.realpath(__file__))
 print(crnt)
 #CHANGES IN UNIX MERGE
@@ -963,7 +964,7 @@ def ubergabe(path):
     print (wert1n)
     print(wert2n)
     print(wert3n)
-    date = time.strftime('%h:%m - %d.%m.%y')
+    date = time.strftime('%H:%M - %d.%m.%y')
     print(date)
     print(wert1)
     print(wert1n)
