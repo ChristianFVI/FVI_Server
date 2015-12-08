@@ -162,14 +162,13 @@ class WatchPic(Thread):
                         try:
                             source = tinify.from_file(gname)
                             source.to_file(gname)
-                        except:
-                            er = True
-                            with open(crnt + r"/gg.json", "r") as file:
-                                json.load(file)
-                            gg.remove(tinify.key)
-                            tinify.key = gg[0]
-                            with open(crnt + r"/gg.json", "w") as file:
-                                json.dump(gg, file)
+                        except Exception as e:
+                            f = open(home + r"/server@fvi.rocks/Produktbilder/fehler/error.log", 'a')
+                            for g in e.args:
+                                print("\a")
+                                f.write(g)
+                                f.write(pname + ": " + "\n")
+                            f.close()
                         print(pname)
 
                     except Exception as e:
@@ -185,7 +184,7 @@ class WatchPic(Thread):
             path_to_watch = home + "/server@fvi.rocks/Produktbilder/nicht editiert"
             after = os.listdir(path_to_watch)
             for i in after:
-                if os.path.isdir(path_to_watch + "/" + i):
+                if os.path.isdir(path_to_watch + "/" + i) and os.listdir(path_to_watch + "/" + i) == []:
                     try:
                         e = []
                         e.append(prodbilder(i, "jpg"))
@@ -226,14 +225,13 @@ class WatchShop(Thread):
                         try:
                             source = tinify.from_file(gname)
                             source.to_file(gname)
-                        except:
-                            er = True
-                            with open(crnt + r"/gg.json", "r") as file:
-                                json.load(file)
-                            gg.remove(tinify.key)
-                            tinify.key = gg[0]
-                            with open(crnt + r"/gg.json", "w") as file:
-                                json.dump(gg, file)
+                        except Exception as e:
+                            f = open(home + r"/server@fvi.rocks/Produktbilder/fehler/error.log", 'a')
+                            for g in e.args:
+                                print("\a")
+                                f.write(g)
+                                f.write(pname + ": " + "\n")
+                            f.close()
                         print(pname)
                     except Exception as e:
                         er = True
@@ -290,14 +288,13 @@ class WatchScreen(Thread):
                         try:
                             source = tinify.from_file(gname)
                             source.to_file(gname)
-                        except:
-                            er = True
-                            with open(crnt + r"/gg.json", "r") as file:
-                                json.load(file)
-                            gg.remove(tinify.key)
-                            tinify.key = gg[0]
-                            with open(crnt + r"/gg.json", "w") as file:
-                                json.dump(gg, file)
+                        except Exception as e:
+                            f = open(home + r"/server@fvi.rocks/Produktbilder/fehler/error.log", 'a')
+                            for g in e.args:
+                                print("\a")
+                                f.write(g)
+                                f.write(pname + ": " + "\n")
+                            f.close()
                         print(pname)
                     except Exception as e:
                         er = True
@@ -341,30 +338,6 @@ class WatchProd(Thread):
         self.start()
 
     def run(self):
-        def prodbilder(prodkat, pn):
-            try:
-                for filename in find_files(
-                                        home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots nicht editiert/" + prodkat,
-                                        '*.' + pn):
-                    pname = filename.replace(
-                        home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots nicht editiert/" + prodkat, "")
-                    gname = os.path.abspath(filename)
-                    try:
-                        resize3(gname)
-                        try:
-                            source = tinify.from_file(gname)
-                            source.to_file(gname)
-                        except:
-                            tinify.key = gg.remove(tinify.key)
-                            tinify.key = gg[0]
-                            with open(crnt + r"/gg.json", "w") as file:
-                                json.dump(gg, file)
-                        print(pname)
-                    except Exception as e:
-                        print("Error: " + pname)
-                        print(e)
-            except Exception as e:
-                print(e)
         while 1:
             path_to_watch = home + "/server@fvi.rocks/Tabellen/Zu berechnende Tabellen"
             after = os.listdir(path_to_watch)
@@ -376,6 +349,12 @@ class WatchProd(Thread):
                     except Exception as e:
                         print("Error:")
                         print(e)
+                        f = open(home + r"/server@fvi.rocks/Tabellen/Fehlerhafte Tabellen/error.log", 'a')
+                        for g in e.args:
+                            print("\a")
+                            f.write(g)
+                            f.write("\n")
+                        f.close()
                         time.sleep(3)
                         try:
 
@@ -389,6 +368,12 @@ class WatchProd(Thread):
                                 os.remove(home + r"/server@fvi.rocks/Tabellen/Zu berechnende Tabellen/" + i)
                         except Exception as e:
                             print(e)
+                            f = open(home + r"/server@fvi.rocks/Tabellen/Fehlerhafte Tabellen/error.log", 'a')
+                            for g in e.args:
+                                print("\a")
+                                f.write(i + ": " + g)
+                                f.write("\n")
+                            f.close()
             time.sleep(10)
 
 
@@ -968,18 +953,21 @@ def ubergabe(path):
     print (wert1n)
     print(wert2n)
     print(wert3n)
-    date = time.strftime('%H:%M - %d.%m.%y')
+    date = time.strftime('%H.%M - %d.%m.%y')
     print(date)
     print(wert1)
     print(wert1n)
 
     print(gew1)
     mb.save(home + r"/server@fvi.rocks/Tabellen/Auszulesende Tabellen/" + savepath + " (" + date + ").xlsx")
-    wb.save(path)
+    path2 = os.path.splitext(path)[0] + " (" + date + ").xlsx"
+    print(path)
+    wb.save(path2)
     time.sleep(1)
-    if os.path.exists(home + r"/server@fvi.rocks/Tabellen/Berechnete Tabellen/" + savepath):
-        os.remove(home + "/server@fvi.rocks/Tabellen/Berechnete Tabellen/" + savepath)
-    shutil.move(path, home + r"/server@fvi.rocks/Tabellen/Berechnete Tabellen/")
+    if os.path.exists(home + r"/server@fvi.rocks/Tabellen/Berechnete Tabellen/" + savepath + " (" + date + ").xlsx"):
+        os.remove(home + "/server@fvi.rocks/Tabellen/Berechnete Tabellen/" + savepath + " (" + date + ").xlsx")
+    shutil.move(path2, home + r"/server@fvi.rocks/Tabellen/Berechnete Tabellen/")
+    os.remove(path)
     #print(endnote("B"))
 
 
