@@ -184,7 +184,7 @@ class WatchPic(Thread):
             path_to_watch = home + "/server@fvi.rocks/Produktbilder/nicht editiert"
             after = os.listdir(path_to_watch)
             for i in after:
-                if os.path.isdir(path_to_watch + "/" + i) and os.listdir(path_to_watch + "/" + i) == []:
+                if os.path.isdir(path_to_watch + "/" + i) and not os.listdir(path_to_watch + "/" + i):
                     try:
                         e = []
                         e.append(prodbilder(i, "jpg"))
@@ -246,7 +246,7 @@ class WatchShop(Thread):
             path_to_watch = home + "/server@fvi.rocks/Produktbilder/Shopbilder nicht editiert"
             after = os.listdir(path_to_watch)
             for i in after:
-                if os.path.isdir(path_to_watch + "/" + i):
+                if os.path.isdir(path_to_watch + "/" + i) and not os.listdir(path_to_watch + "/" + i):
                     try:
                         e = []
                         e.append(prodbilder(i, "jpg"))
@@ -309,7 +309,7 @@ class WatchScreen(Thread):
             path_to_watch = home + "/server@fvi.rocks/Produktbilder/Shopscreenshots nicht editiert"
             after = os.listdir(path_to_watch)
             for i in after:
-                if os.path.isdir(path_to_watch + "/" + i):
+                if os.path.isdir(path_to_watch + "/" + i) and not os.listdir(path_to_watch + "/" + i):
                     try:
                         e = []
                         e.append(prodbilder(i, "jpg"))
