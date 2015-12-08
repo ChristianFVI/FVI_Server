@@ -1,4 +1,5 @@
 __author__ = 'Joshua Menke'
+# -*- coding: utf-8 -*-
 import json
 import os
 import fnmatch
@@ -355,7 +356,7 @@ class WatchProd(Thread):
                         f = open(home + r"/server@fvi.rocks/Tabellen/Fehlerhafte Tabellen/error.log", 'a')
                         for g in e.args:
                             print("\a")
-                            f.write(g)
+                            f.write(i + ": " + g)
                             f.write("\n")
                         f.close()
                         time.sleep(3)
