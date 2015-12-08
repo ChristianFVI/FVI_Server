@@ -33,7 +33,7 @@ def copyDirectory(src, dest):
 home = os.path.expanduser("~")
 with open(crnt + r"/gg.json", "r") as file:
     gg = json.load(file)
-tinify.key = gg[0]
+tinify.key = "BmMHiAQQI8mOJhhMasMuojog_B0LJqGV"
 with open(crnt + r"/gg.json", "w") as file:
     json.dump(gg, file)
 bottlenose.Amazon()
