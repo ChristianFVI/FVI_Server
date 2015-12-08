@@ -185,6 +185,7 @@ class WatchPic(Thread):
             after = os.listdir(path_to_watch)
             for i in after:
                 if os.path.isdir(path_to_watch + "/" + i) and os.listdir(path_to_watch + "/" + i):
+                    time.sleep(60)
                     try:
                         e = []
                         e.append(prodbilder(i, "jpg"))
@@ -247,6 +248,7 @@ class WatchShop(Thread):
             after = os.listdir(path_to_watch)
             for i in after:
                 if os.path.isdir(path_to_watch + "/" + i) and os.listdir(path_to_watch + "/" + i):
+                    time.sleep(60)
                     try:
                         e = []
                         e.append(prodbilder(i, "jpg"))
@@ -310,6 +312,7 @@ class WatchScreen(Thread):
             after = os.listdir(path_to_watch)
             for i in after:
                 if os.path.isdir(path_to_watch + "/" + i) and os.listdir(path_to_watch + "/" + i):
+                    time.sleep(60)
                     try:
                         e = []
                         e.append(prodbilder(i, "jpg"))
