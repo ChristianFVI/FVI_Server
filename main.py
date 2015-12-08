@@ -105,6 +105,7 @@ class WatchResize(Thread):
         self.start()
 
     def run(self):
+        date = time.strftime('%H:%M - %d.%m.%y')
         path_to_watch = home + "/Google Drive/TinyPng/Resize It/"
         path_to_write = home + "/Google Drive/TinyPng/Resized/"
         before = dict([(f, None) for f in os.listdir(path_to_watch)])
@@ -193,9 +194,10 @@ class WatchPic(Thread):
                         e.append(prodbilder(i, "jfif"))
                         e.append(prodbilder(i, "jpe"))
                         src = home + r"/server@fvi.rocks/Produktbilder/nicht editiert/" + i
-                        dst = home + r"/server@fvi.rocks/Produktbilder/fertig editiert/" + i
+                        date = time.strftime('%H.%M - %d.%m.%y')
+                        dst = home + r"/server@fvi.rocks/Produktbilder/fertig editiert/" + i + "(" + date + ")"
                         if True in e:
-                            dst = home + r"/server@fvi.rocks/Produktbilder/fehler/" + i
+                            dst = home + r"/server@fvi.rocks/Produktbilder/fehler/" + i + "(" + date + ")"
                         shutil.move(src, dst)
                     except Exception as e:
                         print(e)
@@ -254,10 +256,11 @@ class WatchShop(Thread):
                         e.append(prodbilder(i, "jpeg"))
                         e.append(prodbilder(i, "jfif"))
                         e.append(prodbilder(i, "jpe"))
+                        date = time.strftime('%H.%M - %d.%m.%y')
                         src = home + r"/server@fvi.rocks/Produktbilder/Shopbilder nicht editiert/" + i
-                        dst = home + r"/server@fvi.rocks/Produktbilder/Shopbilder fertig editiert/" + i
+                        dst = home + r"/server@fvi.rocks/Produktbilder/Shopbilder fertig editiert/" + i + "(" + date + ")"
                         if True in e:
-                            dst = home + r"/server@fvi.rocks/Produktbilder/fehler/" + i
+                            dst = home + r"/server@fvi.rocks/Produktbilder/fehler/" + i + "(" + date + ")"
 
                         shutil.move(src, dst)
                     except Exception as e:
@@ -317,10 +320,11 @@ class WatchScreen(Thread):
                         e.append(prodbilder(i, "jpeg"))
                         e.append(prodbilder(i, "jfif"))
                         e.append(prodbilder(i, "jpe"))
+                        date = time.strftime('%H.%M - %d.%m.%y')
                         src = home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots nicht editiert/" + i
-                        dst = home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots fertig editiert/" + i
+                        dst = home + r"/server@fvi.rocks/Produktbilder/Shopscreenshots fertig editiert/" + i + "(" + date + ")"
                         if True in e:
-                            dst = home + r"/server@fvi.rocks/Produktbilder/fehler/" + i
+                            dst = home + r"/server@fvi.rocks/Produktbilder/fehler/" + i + "(" + date + ")"
 
                         shutil.move(src, dst)
                     except Exception as e:
